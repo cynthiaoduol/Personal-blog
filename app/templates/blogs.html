@@ -8,10 +8,6 @@
     <div class="col-md-12 singleblog">
       <hr>
       <div class="row">
-        <div class="col-md-1">
-          <img class="rounded-circle blog-img"
-            src="{{ url_for('static', filename='photos/' + blog.user.profile_pic_path) }}">
-        </div>
         <div class="col-md-8">
           {% for message in get_flashed_messages() %}
           <div class="alert alert-success">
@@ -19,7 +15,7 @@
             {{ message }}
           </div>
           {% endfor %}
-          <p>By <span style="color: blue">{{blog.user.username}}</span> on {{blog.posted.strftime('%d-%m-%Y')}}</p>
+          <p>By <span style="color: blue">{{blog.user.username}}</span> on {{blog.posted_on.strftime('%d-%m-%Y')}}</p>
           <h3>Title : {{blog.title}} <span
               style="float: right;font-size:18px;margin-right:20px">{{blog.comment.count()}} Comments</span></h3>
           <p>{{blog.content}}</p>
