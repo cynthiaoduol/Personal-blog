@@ -1,8 +1,9 @@
-from flask import render_template, redirect, request, url_for, flash, abort
+from flask import render_template, redirect, request, url_for, flash, abort,current_app
 from . import main
 from flask_login import login_required, current_user
 from ..models import User, Blog
 from .. import db
+from ..request import get_quote
 from .forms import BlogForm, UpdateProfile, CreateBlog
 from .. import db, photos
 
@@ -22,6 +23,11 @@ def home():
         Blog.posted_on.desc()).paginate(page=page, per_page=6)
     return render_template('home.html', blogs=blogs, title="Blogs | Welcome to G~Blog")
 
+@main.route('/blog/<id>')
+def blog(id):
+    comments = Comment.query.filter_by(blog_id=id).all()
+    blog = Blog.query.get(id)
+    return render_template('blog.html',blog=blog,comments=comments)
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -32,6 +38,20 @@ def profile(uname):
 
     return render_template("profile/profile.html", user=user)
 
+@main.route("/blog/new", methods=['GET', 'POST'])
+@login_required
+def new_blog():
+    form = BlogForm()
+    if form.validate_on_submit():
+        blog = Blog(title=form.title.data, content=form.content.data, user=current_user)
+        
+        db.session.add(blog)
+        db.session.commit()
+        
+        flash('You post has been created!', 'success')
+        return redirect(url_for('main.index'))
+    
+    return render_template('newblogs.html', title='New Post | Welcome to BlogPost', form=form)
 
 @main.route('/user/<uname>/update', methods=['GET', 'POST'])
 @login_required
