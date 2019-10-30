@@ -1,5 +1,5 @@
 # G~Blog
-#### By [cynthiaoduol](https://github.com/Owiti-Charles)
+#### By [cynthiaoduol](https://github.com/cynthiaoduol)
 
 # Description
 This  is a flask application that allows writers to post blogs, edit and delete blogs. It also allows users who have signed up to comment on the blogs that have been posted by a writer.
